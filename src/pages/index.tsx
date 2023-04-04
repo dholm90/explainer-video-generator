@@ -18,7 +18,7 @@ export default function Home() {
       <main className='flex min-h-screen w-full flex-col items-center justify-center gap-4 px-8 text-center'>
 
         <h1 className='y-4 text-6xl font-bold'>Explainer Video Generator</h1>
-        <h2 className='y-4 text-4xl font-bold'>Generate explainer videos complete with scripts and storyboards</h2>
+        <h2 className='y-4 text-4xl font-bold'>Generate explainer video scripts and storyboards</h2>
 
 
         {session?.user?.email ? (
