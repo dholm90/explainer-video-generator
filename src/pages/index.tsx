@@ -12,9 +12,7 @@ export default function Home() {
 
   return (
     <div>
-      <Head>
-        <title>Dall-E Prompt Generator</title>
-      </Head>
+      <Meta />
 
 
       <main className='flex min-h-screen w-full flex-col items-center justify-center gap-4 px-8 text-center'>
