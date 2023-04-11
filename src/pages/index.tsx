@@ -4,12 +4,36 @@ import LoginComponent from '@/components/login'
 import ClientSection from '../components/clientSection'
 import { useSession, signOut } from 'next-auth/react';
 import Head from 'next/head'
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 
 
 export default function Home() {
-
+  const router = useRouter();
+  const [hasAccess, setHasAccess] = useState(false);
   const { data: session } = useSession();
 
+  useEffect(() => {
+    async () => {
+      const token = localStorage.getItem('accessToken');
+
+      const resp = await fetch('https://theapiuri/api/user', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+
+      const json = await resp.json();
+
+      if (!token && json.status !== 200) {
+        router.push('/signin');
+      } else {
+        setHasAccess(true);
+      }
+    }
+
+  })
   return (
     <div>
       <Meta />
@@ -24,7 +48,7 @@ export default function Home() {
         {session?.user?.email ? (
           <>
             <ClientSection></ClientSection>
-            <button className='rounded-xl bg-neutral-900 px-4 py-2 font-medium text-white hover:bg-black/80' onClick={() => signOut()}>Sign Out</button>
+            <button className='rounded-xl bg-neutral-900 px-4 py-2 font-medium text-white hover:bg-black/80' onClick={({ }) => signOut()}>Sign Out</button>
           </>
         ) : (
           <>

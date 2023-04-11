@@ -1,4 +1,10 @@
 import { OpenAIStream, OpenAIStreamPayload } from "@/lib/openAIStream";
+import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../auth/[...nextauth]"
+import { getToken } from 'next-auth/jwt'
+import { hasToken } from "@/lib/checkUser";
+
 
 if (!process.env.OPENAI_API_KEY) {
   throw new Error("Missing env var from OpenAI");
@@ -9,6 +15,8 @@ export const config = {
 };
 
 export default async function POST(req: Request): Promise<Response> {
+
+
   const { prompt } = (await req.json()) as {
     prompt?: string;
   };
@@ -33,3 +41,6 @@ export default async function POST(req: Request): Promise<Response> {
   const stream = await OpenAIStream(payload);
   return new Response(stream);
 }
+
+
+

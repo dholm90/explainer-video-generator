@@ -1,11 +1,11 @@
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
 
   adapter: PrismaAdapter(prisma),
 
@@ -19,7 +19,9 @@ export default NextAuth({
     // We can pass in additional information from the user document MongoDB returns
     // This could be avatars, role, display name, etc...
     async jwt({ token, user }) {
+      token.userRole = "admin"
       if (user) {
+
         token.user = {
           _id: user.id,
           email: user.email,
@@ -30,4 +32,5 @@ export default NextAuth({
     },
 
   },
-})
+}
+export default NextAuth(authOptions)
